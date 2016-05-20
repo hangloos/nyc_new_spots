@@ -1,7 +1,7 @@
 
 #!/usr/bin/env ruby
 
+require 'bundler/setup'
 require 'nyc_new_spots'
-require "bundler/setup"
 
 NycNewSpots::CLI.new.call
