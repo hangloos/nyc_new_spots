@@ -1,55 +1,73 @@
 class NycNewSpots::Spots 
 
-attr_accessor :name, :address, :food_type, :price_range, :hours, :more_business_information, :phone_number
-
-  def self.today
-    spot_1 = self.new
-    spot_1.name = "Ludlow Coffee Supply"
-    spot_1.address = "176 Ludlow St New York, NY 10002"
-    spot_1.food_type = "Coffee & Tea, Breakfast & Brunch"
-    spot_1.price_range = "Under $10"
-    spot_1.hours = "Mon 8:00am - 8:00pm"
-    spot_1.phone_number = "(212) 777-7465"
-    spot_1.more_business_information = "Test More Business Info!"
-
-    spot_2 = self.new
-    spot_2.name = "Ludlow Coffee Supply"
-    spot_2.address = "176 Ludlow St New York, NY 10002"
-    spot_2.food_type = "Coffee & Tea, Breakfast & Brunch"
-    spot_2.price_range = "Under $10"
-    spot_2.hours = "Mon 8:00am - 8:00pm"
-    spot_2.phone_number = "(212) 777-7465"
-    spot_2.more_business_information = "Test More Business Info!"
-
-    [spot_1,spot_2]
+attr_accessor :name, :address_phone_number, :food_type
+  
+  def initialize(name = nil,address_phone_number = nil, food_type = nil)
+    @name = name
+    @address_phone_number = address_phone_number
+    @food_type = food_type
   end
 
 
-  def self.scrape_yelp
+  def self.all
+    @@all ||= scrape_eater
+  end
 
+  def self.find(id)
+    self.all[id-1]
+  end
+
+  def self.find_by_name(name)
+    self.all.detect{|x| x.name.downcase.strip == name.downcase.strip}
+  end
+
+ 
+ def self.more_information(name)
+
+    doc =  Nokogiri::HTML(open("http://ny.eater.com/maps/best-new-new-york-restaurants-heatmap"))
+        #pull out the object of the name entered. then figure out that index in self.all
+        index_for = self.all.detect{|x| x.name.downcase.strip == name.to_s.downcase.strip}
+        if index_for != nil
+          index_calculation = self.all.index(index_for)
+          #use that index in my scrape text to output more information
+          final_index_calculation = (index_calculation + 12)
+          more_information_text = doc.css("div.c-entry-content p")[final_index_calculation].text
+          
+        puts more_information_text.to_s
+        else
+          puts "This is spelled wrong. Try again. "
+        end
+  end
+
+private
+  def self.scrape_eater
     doc = Nokogiri::HTML(open("http://ny.eater.com/maps/best-new-new-york-restaurants-heatmap"))
-      spot = self.new
-      names_array = doc.search("h2").text
-      names_array = names_array.chomp("Related Maps")
-      new_array = names_array.split("\n")
-      new_array.delete("")
-      spot.name = new_array
-binding.pry
+          #restaurant_names scrape
+          names_array = doc.search("h2").text.strip
+          names_array = names_array.chomp("Related Maps")
+          new_array = names_array.split("\n")
+          final_array = []
+          new_array.each_with_index{|x,index| if index < 9
+          final_array << x.delete(x[0])
+          else
+          final_array << x.delete(x[0]).delete(x[1])
+          end}
+          final_array_striped = []
+          final_array.each{|x| final_array_striped << x.strip}
 
-
-
+          #address_phone_number
+          address_phone_number_array = doc.css("div.c-mapstack__address").text.split("\n")
+          
+          #food_type
+          
+          food_type_array = doc.css("div.c-mapstack__category").text.strip.split("\n")
+          food_type_array.map{|x| x.strip! if x.respond_to? :strip!}
+          food_type_array.delete("")
+          food_type_array.delete("$$$$")
+      
+      #create new instances
+      final_array_striped.each_with_index.map{|x,index| new(x,address_phone_number_array[index],food_type_array[index])}
   end
 
-#doc.search("body h2")[0].text = "\n1 Amada"
-#body h2 span.c-mapstack__card-index).text  ----* gives me all the numbers on the list
 
 end
-
-# so my index + 1 can print that text. I just need to delete the first part for the name. 
-# so if index <9. delete first 2 characters. if 
-#.delete(x[0]) in each would delete each first letter. 
-#"eric".delete("eric"[0]).delete("eric"[1])
-
-#Take the scrape part with all the h2 text and separate by the spaces in an array. Join.
-
-#Then take the scrape for that number to use as the index - 1 for that array. And possibly all the others for the other information.

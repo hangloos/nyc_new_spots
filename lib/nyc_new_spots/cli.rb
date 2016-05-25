@@ -10,36 +10,33 @@ end
 def list_spots
     puts "New Places in New York:"
     puts "\n"
-    @spots = NycNewSpots::Spots.today
-    @spots.each_with_index do |spot, x|
-     puts "#{x+1}. #{spot.name} - #{spot.location} - #{spot.price_range}"
-     puts       "#{spot.categories}"
-     puts       "\n"
-     puts       "Address: #{spot.address}"
-     puts       "Phone Number: #{spot.phone_number}"
-     puts       "Hours:"
-     puts       "\n"
-     puts              "#{spot.hours}"
-     puts       "\n"
-     puts       "\n"
-     end
+    @spots = NycNewSpots::Spots.scrape_eater
+    @spots.each_with_index do |spot, index|
+    puts <<-DOC
+   #{index+1}.   #{spot.name} - Food Type: #{spot.food_type}
+    \n
+                  Address & Phone Number: #{spot.address_phone_number}
+            \n
+    DOC
+  end
             
 end
 
 
 def more_information
   input = nil
-  while input != "exit"
+    while input != "exit"
       puts "Enter the number of the place you want to see more information on. Enter list to see the places again. Exit when you want to leave."
       input = gets.strip.downcase  
-    if input.to_i > 0
-      spot_entry = @spots[input.to_i-1]
-      puts "More Business Information:\n"
-      puts "#{spot_entry.more_business_information}"
-    elsif input == "list"
+    if input == "list"
       list_spots
+    elsif input.to_i == 0
+        puts "\n"
+        puts "More Business Information:"
+        puts"\n"
+        NycNewSpots::Spots.more_information(input.to_s)
     else
-      puts "List or exit"
+      puts "List, Restaurant Name or Exit"
     end
     end
 end
