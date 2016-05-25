@@ -32,7 +32,8 @@ attr_accessor :name, :address_phone_number, :food_type
           #use that index in my scrape text to output more information
           final_index_calculation = (index_calculation + 12)
           more_information_text = doc.css("div.c-entry-content p")[final_index_calculation].text
-          
+        puts "More Business Information:"
+        puts "\n"  
         puts more_information_text.to_s
         else
           puts "This is spelled wrong. Try again. "

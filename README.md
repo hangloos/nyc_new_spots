@@ -1,6 +1,8 @@
 # NycNewSpots
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/nyc_new_spots`. To experiment with that code, run `bin/console` for an interactive prompt.
+Welcome to NYC New Spots application. This application gives you information from eater.com about the new, hot restaurants in New York City. You will receive a list of them that includes their name, food type, address and phone number. By entering a name of a restaurant into the program, you will recieve a small paragraph about the restaurant. 
+
+In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/nyc_new_spots`. To experiment with that code, run `bin/console` for an interactive prompt.
 
 TODO: Delete this and the text above, and describe your gem
 
@@ -22,7 +24,7 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Run: nyc-new-spots after installing the gem. 
 
 ## Development
 
@@ -32,7 +34,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/nyc_new_spots.
+Bug reports and pull requests are welcome on GitHub at https://github.com/hangloos/nyc_new_spots.
 
 
 ## License
