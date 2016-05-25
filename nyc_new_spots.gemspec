@@ -23,8 +23,8 @@ Gem::Specification.new do |spec|
   end
 
   spec.files         = `git ls-files`.split($\)
-  spec.executables   = ["nyc-new-spots"]
-  spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
+  spec.bindir        = "exe"
+  spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib", "lib/nyc_new_spots"]
 
   spec.add_development_dependency "bundler", "~> 1.11"
