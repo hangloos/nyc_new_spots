@@ -27,7 +27,7 @@ class NycNewSpots::CLI
     input = nil
       while input != "exit"
         puts "\n"
-        puts "Enter the number of the place you want to see more information on. Enter list to see the places again. Exit when you want to leave."
+        puts "Enter the name of the place you want to see more information on. Enter list to see the places again. Exit when you want to leave."
         input = gets.strip.downcase  
       if input == "list"
         list_spots
