@@ -8,6 +8,8 @@ TODO: Delete this and the text above, and describe your gem
 
 ## Installation
 
+Clone from GitHub. Navigate into program directory via terminal. Then install program (see below)
+
 Add this line to your application's Gemfile:
 
 ```ruby
